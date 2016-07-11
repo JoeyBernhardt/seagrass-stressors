@@ -99,10 +99,14 @@ growth %>%
 
 
 growth_pro <- growth %>% 
-	select(Obs_ID, starts_with("Growth")) %>% 
+	select(Obs_ID, Paper_Num, Treatment_designation, starts_with("Growth")) %>% 
 	gather(., "response_type", "value", starts_with("Growth")) %>% 
 	mutate(value = as.numeric(value)) %>% 
 	mutate(response_type = as.character(response_type))
+
+## groups
+Paper.number_species_life.stage_response.type_statistic_treatment.type1_treatment.type2_treatment.type3_time.point
+
 
 
 unique((growth_pro$response_type))
@@ -171,5 +175,20 @@ str(growth_pro_1)
 unique(growth_pro_1$response_type)
 ?revalue
 
+## have to make sure that growth estimates are not decoupled from their units...
 
-### Mary's attempt to re-integrate these column 
+
+## treatments and controls have to get split
+
+### Mary's attempt to re-integrate these column names
+growth_pro_1 %>% 
+	mutate(Paper_Num = as.factor(Paper_Num)) %>% 
+	select(Obs_ID, Paper_Num, Treatment_designation, response_type, value) %>% 
+	filter(!is.na(value)) %>% 
+	group_by(Paper_Num, Treatment_designation) %>% View
+#summarise(mean_growth = mean(value)) %>%
+	spread(., Treatment_designation, mean_growth) %>%
+	group_by(Paper_Num) %>% 
+	mutate(response_ratio = log(Treatment/Control)) %>% 
+	ggplot(data = ., aes(x = Paper_Num, y = response_ratio)) + geom_point(size = 4) +
+	geom_hline(yintercept = 0)
