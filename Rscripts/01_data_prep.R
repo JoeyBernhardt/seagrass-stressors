@@ -111,18 +111,28 @@ unique((growth_pro$response_type))
 
 summary(growth_pro$value)
 
+## changing names so all growth means are called the same thing
 growth_pro_1 <- growth_pro %>% 
 	mutate(response_type = revalue(response_type,
 																 c(Growth_Mean.1 = "mean_growth", 
-																													Growth_Mean.2 = "mean_growth",
-																													Growth_Mean.3 = "mean_growth", 
-																													Growth_Mean.4 = "mean_growth",
-																													Growth_Mean.5 = "mean_growth",
-																													Growth_Mean.6 = "mean_growth",
-																													Growth_Mean.7 = "mean_growth",
-																													Growth_Mean.8 = "mean_growth",
-																													Growth_Mean.9 = "mean_growth",
-																													Growth_Mean.10 = "mean_growth")))
+																		Growth_Mean.2 = "mean_growth",
+																		Growth_Mean.3 = "mean_growth", 
+																		Growth_Mean.4 = "mean_growth",
+																		Growth_Mean.5 = "mean_growth",
+																		Growth_Mean.6 = "mean_growth",
+																		Growth_Mean.7 = "mean_growth",
+																		Growth_Mean.8 = "mean_growth",
+																		Growth_Mean.9 = "mean_growth",
+																		Growth_Mean.10 = "mean_growth",
+																		Growth_plantpart_units.2 = "Growth_plantpart_units",
+																 	Growth_plantpart_units.3 = "Growth_plantpart_units", 
+																 	Growth_plantpart_units.4 = "Growth_plantpart_units",
+																 	Growth_plantpart_units.5 = "Growth_plantpart_units",
+																 	Growth_plantpart_units.6 = "Growth_plantpart_units",
+																 	Growth_plantpart_units.7 = "Growth_plantpart_units",
+																 	Growth_plantpart_units.8 = "Growth_plantpart_units",
+																 	Growth_plantpart_units.9 = "Growth_plantpart_units",
+																 	Growth_plantpart_units.10 = "Growth_plantpart_units")))
 
 
 str(growth_pro_1)
