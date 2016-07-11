@@ -7,6 +7,8 @@ library(dplyr)
 library(ggplot2)
 library(metafor)
 library(tidyr)
+library(plyr)
+library(dplyr)
 
 
 ## import data
@@ -69,8 +71,10 @@ sample %>%
 
 #### playing around with multiple growth columns
 
-growth <- read.csv("/Users/Joey/Documents/seagrass-stressors/growth.csv")
+growth <- read.csv("./growth.csv")
 
+levels(growth$Treatment_designation)
+levels(growth$Treatment_designation)[levels(growth$Treatment_designation)== "Control "] <- "Control"
 
 growth %>% 
 	select(Obs_ID, Treatment_designation, Growth_Mean, Growth_plantpart_units, Growth_n, Growth_SD) %>%
@@ -81,9 +85,9 @@ growth %>%
 
 growth %>% 
 	mutate(Paper_Num = as.factor(Paper_Num)) %>% 
-	select(Obs_ID, Paper_Num, Treatment_designation, Growth_Mean, Growth_plantpart_units, Growth_n, Growth_SD) %>%
+	select(Obs_ID, Paper_Num, Treatment_designation, Growth_Mean, Growth_plantpart_units, Growth_n, Growth_SD) %>% 
 	filter(!is.na(Growth_Mean)) %>% 
-	group_by(Paper_Num, Treatment_designation) %>% 
+	group_by(Paper_Num, Treatment_designation) %>% View
 	summarise(mean_growth = mean(Growth_Mean)) %>%
 	spread(., Treatment_designation, mean_growth) %>%
 	group_by(Paper_Num) %>% 
@@ -95,19 +99,17 @@ growth %>%
 
 
 growth_pro <- growth %>% 
-	select(Obs_ID, starts_with("Growth")) %>%
-	gather(., "response_type", "value", starts_with("Growth")) %>%
+	select(Obs_ID, starts_with("Growth")) %>% 
+	gather(., "response_type", "value", starts_with("Growth")) %>% 
 	mutate(value = as.numeric(value)) %>% 
 	mutate(response_type = as.character(response_type))
 
 
-unique(growth_pro_1$response_type)
+unique((growth_pro$response_type))
+
 ?revalue
 
 summary(growth_pro$value)
-
-library(plyr)
-library(dplyr)
 
 growth_pro_1 <- growth_pro %>% 
 	mutate(response_type = revalue(response_type,
