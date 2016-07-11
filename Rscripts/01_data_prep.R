@@ -194,14 +194,3 @@ growth_pro_1 %>%
 	geom_hline(yintercept = 0)
 	
 	
-	growth %>% 
-		mutate(Paper_Num = as.factor(Paper_Num)) %>% 
-		select(Obs_ID, Paper_Num, Treatment_designation, Growth_Mean, Growth_plantpart_units, Growth_n, Growth_SD) %>% 
-		filter(!is.na(Growth_Mean)) %>% 
-		group_by(Paper_Num, Treatment_designation) %>% View
-	summarise(mean_growth = mean(Growth_Mean)) %>%
-		spread(., Treatment_designation, mean_growth) %>%
-		group_by(Paper_Num) %>% 
-		mutate(response_ratio = log(Treatment/Control)) %>% 
-		ggplot(data = ., aes(x = Paper_Num, y = response_ratio)) + geom_point(size = 4) +
-		geom_hline(yintercept = 0)
