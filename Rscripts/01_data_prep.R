@@ -98,7 +98,32 @@ growth_pro <- growth %>%
 	select(Obs_ID, starts_with("Growth")) %>%
 	gather(., "response_type", "value", starts_with("Growth")) %>%
 	mutate(value = as.numeric(value)) %>% 
-	filter()
+	mutate(response_type = as.character(response_type))
 
+
+unique(growth_pro_1$response_type)
+?revalue
 
 summary(growth_pro$value)
+
+library(plyr)
+library(dplyr)
+
+growth_pro_1 <- growth_pro %>% 
+	mutate(response_type = revalue(response_type,
+																 c(Growth_Mean.1 = "mean_growth", 
+																													Growth_Mean.2 = "mean_growth",
+																													Growth_Mean.3 = "mean_growth", 
+																													Growth_Mean.4 = "mean_growth",
+																													Growth_Mean.5 = "mean_growth",
+																													Growth_Mean.6 = "mean_growth",
+																													Growth_Mean.7 = "mean_growth",
+																													Growth_Mean.8 = "mean_growth",
+																													Growth_Mean.9 = "mean_growth",
+																													Growth_Mean.10 = "mean_growth")))
+
+
+str(growth_pro_1)
+
+unique(growth_pro_1$response_type)
+?revalue
