@@ -124,7 +124,8 @@ growth_pro_1 <- growth_pro %>%
 																		Growth_Mean.8 = "mean_growth",
 																		Growth_Mean.9 = "mean_growth",
 																		Growth_Mean.10 = "mean_growth",
-																		Growth_plantpart_units.2 = "Growth_plantpart_units",
+																		Growth_plantpart_units.1 = "Growth_plantpart_units",
+																 	Growth_plantpart_units.2 = "Growth_plantpart_units",
 																 	Growth_plantpart_units.3 = "Growth_plantpart_units", 
 																 	Growth_plantpart_units.4 = "Growth_plantpart_units",
 																 	Growth_plantpart_units.5 = "Growth_plantpart_units",
@@ -132,10 +133,43 @@ growth_pro_1 <- growth_pro %>%
 																 	Growth_plantpart_units.7 = "Growth_plantpart_units",
 																 	Growth_plantpart_units.8 = "Growth_plantpart_units",
 																 	Growth_plantpart_units.9 = "Growth_plantpart_units",
-																 	Growth_plantpart_units.10 = "Growth_plantpart_units")))
+																 	Growth_plantpart_units.10 = "Growth_plantpart_units",
+																 	Growth_SD.1 = "Growth_SD",
+																 	Growth_SD.2 = "Growth_SD",
+																 	Growth_SD.3 = "Growth_SD",
+																 	Growth_SD.4 = "Growth_SD",
+																 	Growth_SD.5 = "Growth_SD",
+																 	Growth_SD.6 = "Growth_SD",
+																 	Growth_SD.7 = "Growth_SD",
+																 	Growth_SD.8 = "Growth_SD",
+																 	Growth_SD.9 = "Growth_SD",
+																 	Growth_SD.10 = "Growth_SD",
+																 	Growth_SE.1 = "Growth_SE",
+																 	Growth_SE.2 = "Growth_SE",
+																 	Growth_SE.3 = "Growth_SE",
+																 	Growth_SE.4 = "Growth_SE",
+																 	Growth_SE.5 = "Growth_SE",
+																 	Growth_SE.6 = "Growth_SE",
+																 	Growth_SE.7 = "Growth_SE",
+																 	Growth_SE.8 = "Growth_SE",
+																 	Growth_SE.9 = "Growth_SE",
+																 	Growth_SE.10 = "Growth_SE",
+																 	Growth_n.1 = "Growth_n",
+																 	Growth_n.2 = "Growth_n",
+																 	Growth_n.3 = "Growth_n",
+																 	Growth_n.4 = "Growth_n",
+																 	Growth_n.5 = "Growth_n",
+																 	Growth_n.6 = "Growth_n",
+																 	Growth_n.7 = "Growth_n",
+																 	Growth_n.8 = "Growth_n",
+																 	Growth_n.9 = "Growth_n",
+																 	Growth_n.10 = "Growth_n")))
 
 
 str(growth_pro_1)
 
 unique(growth_pro_1$response_type)
 ?revalue
+
+
+### Mary's attempt to re-integrate these column 
