@@ -12,6 +12,35 @@ library(stringr)
 
 growth <- read.csv("./growth.csv")
 
+#meta data file
+temperature <- read.csv("./Met_seagrass_pCO2_streamlined - temperature.csv")
+data <- select(temperature, Obs_ID, Paper_Num, Species..seagrass., Ontogeny, Treatment.type_CO2, Treatment.type_N, Treatment.type_Temp, Treatment.type_HW.hours, Treatment.type_recovery, treatment.type_Light, Treatment.type_herbivory_removal_percent, duration.days)
+
+## bring in Joey's output file
+data.clean <- read.csv("./renamed_all_variables.csv")
+data1 <- merge(data, data.clean, by = "Obs_ID")
+data1$group <- paste(data1$Obs_ID, data1$Paper_Num.x, data1$Species..seagrass., data1$Ontogeny, data1$Treatment.type_CO2, data1$Treatment.type_N, data1$Treatment.type_Temp, data1$Treatment.type_HW.hours, data1$Treatment.type_recovery, data1$treatment.type_Light, data1$Treatment.type_herbivory_removal_percent, data1$duration.days, sep = '.')
+
+
+data1 %>% 
+	unite(group, Obs_ID, Paper_Num.x, Species..seagrass., Ontogeny, Treatment.type_CO2, Treatment.type_N, Treatment.type_Temp, Treatment.type_HW.hours, Treatment.type_recovery, treatment.type_Light, Treatment.type_herbivory_removal_percent, duration.days) %>% View
+
+
+
+write.csv(data1, "merged.data")
+
+## have to spread it before we can calculate effect sizes. 
+	
+effect_sizes <- 	escalc(Growth_Mean/Growth_SD ~ factor(Treatment_designation) | factor(group),
+												data = data1,
+												weights = Growth_n,
+												measure = "ROM", 
+												slab = group)
+
+
+
+
+
 ### begin the long pipe of data manipulations!!
 
 growth_rep <- growth %>% 
@@ -48,3 +77,5 @@ ggplot(data = effect_sizes, aes(y = yi, x = study_number)) + geom_point(size = 2
 	geom_hline(yintercept = 0) +
 	geom_errorbar(aes(ymin = yi - vi, ymax = yi + vi), width = 0.1) + ggtitle("Growth responses") +
 	ylab("log response ratio") + xlab("study number")
+
+
