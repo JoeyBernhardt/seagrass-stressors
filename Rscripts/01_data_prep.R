@@ -26,7 +26,7 @@ data <- data.raw[ , !duplicated(colnames(data))]
 
 data.processed <- data.raw %>% 
 	unite(., all_growth_mean, starts_with("Growth_Mean")) %>% View
-	
+
 names(data.processed)
 
 data.processed %>% 
@@ -40,9 +40,9 @@ names(data)
 sample.raw <- data %>% 
 	select(Obs_ID, Temperature_Treatment, starts_with("Pmax"), starts_with("NPP"), starts_with("NPP")) %>%
 	as.data.frame() %>% 
-
-## get the columns in the right formats
-sample <- sample.raw %>% 
+	
+	## get the columns in the right formats
+	sample <- sample.raw %>% 
 	filter(!is.na(Temperature_Treatment)) %>%
 	mutate(Pmax_mean = as.numeric(Pmax_mean),
 				 Pmax_SE = as.numeric(Pmax_SE),
@@ -56,7 +56,7 @@ sample$Temperature_Treatment <- as.character(sample$Temperature_Treatment)
 sample$Temperature_Treatment[sample$Temperature_Treatment == "Control"] <- "control"
 sample$Temperature_Treatment[sample$Temperature_Treatment == "ambient"] <- "control"
 
-	
+
 
 sample %>% 
 	plyr::revalue(Temperature_Treatment, c(Control = "control", ambient = "control")) %>% View
@@ -88,14 +88,14 @@ growth %>%
 	select(Obs_ID, Paper_Num, Treatment_designation, Growth_Mean, Growth_plantpart_units, Growth_n, Growth_SD) %>% 
 	filter(!is.na(Growth_Mean)) %>% 
 	group_by(Paper_Num, Treatment_designation) %>% View
-	summarise(mean_growth = mean(Growth_Mean)) %>%
+summarise(mean_growth = mean(Growth_Mean)) %>%
 	spread(., Treatment_designation, mean_growth) %>%
 	group_by(Paper_Num) %>% 
 	mutate(response_ratio = log(Treatment/Control)) %>% 
 	ggplot(data = ., aes(x = Paper_Num, y = response_ratio)) + geom_point(size = 4) +
 	geom_hline(yintercept = 0)
-	
-	
+
+
 
 
 growth_pro <- growth %>% 
@@ -119,16 +119,16 @@ summary(growth_pro$value)
 growth_pro_1 <- growth_pro %>% 
 	mutate(response_type = revalue(response_type,
 																 c(Growth_Mean.1 = "mean_growth", 
-																		Growth_Mean.2 = "mean_growth",
-																		Growth_Mean.3 = "mean_growth", 
-																		Growth_Mean.4 = "mean_growth",
-																		Growth_Mean.5 = "mean_growth",
-																		Growth_Mean.6 = "mean_growth",
-																		Growth_Mean.7 = "mean_growth",
-																		Growth_Mean.8 = "mean_growth",
-																		Growth_Mean.9 = "mean_growth",
-																		Growth_Mean.10 = "mean_growth",
-																		Growth_plantpart_units.1 = "Growth_plantpart_units",
+																 	Growth_Mean.2 = "mean_growth",
+																 	Growth_Mean.3 = "mean_growth", 
+																 	Growth_Mean.4 = "mean_growth",
+																 	Growth_Mean.5 = "mean_growth",
+																 	Growth_Mean.6 = "mean_growth",
+																 	Growth_Mean.7 = "mean_growth",
+																 	Growth_Mean.8 = "mean_growth",
+																 	Growth_Mean.9 = "mean_growth",
+																 	Growth_Mean.10 = "mean_growth",
+																 	Growth_plantpart_units.1 = "Growth_plantpart_units",
 																 	Growth_plantpart_units.2 = "Growth_plantpart_units",
 																 	Growth_plantpart_units.3 = "Growth_plantpart_units", 
 																 	Growth_plantpart_units.4 = "Growth_plantpart_units",
@@ -183,11 +183,15 @@ unique(growth_pro_1$response_type)
 ### Mary's attempt to re-integrate these column names
 growth_pro_1 %>% 
 	mutate(Paper_Num = as.factor(Paper_Num)) %>% 
+	select(Obs_ID, Paper_Num, Treatment_designation, response_type, value) %>%
 	filter(!is.na(value)) %>% 
 	group_by(Obs_ID, Paper_Num, Treatment_designation) %>% 
-	filter(response_type == 'mean_growth') %>% View
-  #summarise(mean_growth = mean(value)) %>%
-	spread(., key = Treatment_designation, value = value, fill = NA) %>% View ## not sure why this isn't working
+filter(response_type == 'mean_growth') %>% View
+#summarise(mean_growth = mean(value)) %>%
+spread(., key = Treatment_designation, value = value, fill = NA) %>% View ## not sure why this isn't working
+group_by(Paper_Num, Treatment_designation) %>% View
+#summarise(mean_growth = mean(value)) %>%
+spread(., Treatment_designation, mean_growth) %>%
 	group_by(Paper_Num) %>% 
 	mutate(response_ratio = log(Treatment/Control)) %>% 
 	ggplot(data = ., aes(x = Paper_Num, y = response_ratio)) + geom_point(size = 4) +
