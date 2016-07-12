@@ -3,12 +3,12 @@
 
 
 library(googlesheets)
-library(dplyr)
 library(ggplot2)
 library(metafor)
 library(tidyr)
 library(plyr)
 library(dplyr)
+library(stringr)
 
 growth <- read.csv("./growth.csv")
 
