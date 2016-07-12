@@ -74,7 +74,7 @@ growth <- read.csv("/Users/Joey/Documents/seagrass-stressors/growth.csv")
 
 growth %>% 
 	select(Obs_ID, Treatment_designation, Growth_Mean, Growth_plantpart_units, Growth_n, Growth_SD) %>%
-	gather(., "response_type", "value", starts_with("Growth")) %>%
+	gather(., "response_type", "value", starts_with("Growth")) %>% View
 	group_by(Obs_ID) %>% 
 	spread(., response_type, value, fill = NA)
 
@@ -83,11 +83,11 @@ growth %>%
 	mutate(Paper_Num = as.factor(Paper_Num)) %>% 
 	select(Obs_ID, Paper_Num, Treatment_designation, Growth_Mean, Growth_plantpart_units, Growth_n, Growth_SD) %>%
 	filter(!is.na(Growth_Mean)) %>% 
-	group_by(Paper_Num, Treatment_designation) %>% 
-	summarise(mean_growth = mean(Growth_Mean)) %>%
-	spread(., Treatment_designation, mean_growth) %>%
+	dplyr::group_by(Paper_Num, Treatment_designation) %>% 
+	dplyr::summarise(mean_growth = mean(Growth_Mean)) %>% 
+	spread(., Treatment_designation, mean_growth) %>% 
 	group_by(Paper_Num) %>% 
-	mutate(response_ratio = log(Treatment/Control)) %>% 
+	mutate(response_ratio = log(Treatment/Control)) %>%
 	ggplot(data = ., aes(x = Paper_Num, y = response_ratio)) + geom_point(size = 4) +
 	geom_hline(yintercept = 0)
 	
