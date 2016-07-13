@@ -13,7 +13,9 @@ library(stringr)
 growth <- read.csv("./growth.csv")
 
 #meta data file
-temperature <- read.csv("./Met_seagrass_pCO2_streamlined - temperature.csv")
+temperature <- read.csv("./Met_seagrass_temperature.csv", fileEncoding = "UCS-2LE")
+
+temperature_red <- temperature[,colSums(is.na(temperature))<nrow(temperature)]
 data <- select(temperature, Obs_ID, Paper_Num, Species..seagrass., Ontogeny, Treatment.type_CO2, Treatment.type_N, Treatment.type_Temp, Treatment.type_HW.hours, Treatment.type_recovery, treatment.type_Light, Treatment.type_herbivory_removal_percent, duration.days)
 
 ## bring in Joey's output file
@@ -27,7 +29,7 @@ data1 %>%
 
 
 
-write.csv(data1, "merged.data")
+write.csv(data1, "merged.data.csv")
 
 ## have to spread it before we can calculate effect sizes. 
 	
@@ -77,5 +79,7 @@ ggplot(data = effect_sizes, aes(y = yi, x = study_number)) + geom_point(size = 2
 	geom_hline(yintercept = 0) +
 	geom_errorbar(aes(ymin = yi - vi, ymax = yi + vi), width = 0.1) + ggtitle("Growth responses") +
 	ylab("log response ratio") + xlab("study number")
+
+#### code from tuesday afternoon: 
 
 
